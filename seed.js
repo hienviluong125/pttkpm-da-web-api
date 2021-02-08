@@ -1,7 +1,7 @@
 const app = require('./index');
 const dbModel = require('./models/index');
 const faker = require('faker');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const { User, Workspace, WorkspaceType, Service, WorkspaceService, Order, Blog, Attachment } = dbModel;
 const { Sequelize } = require('sequelize');

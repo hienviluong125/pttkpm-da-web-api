@@ -1,6 +1,6 @@
 const { generateJWT } = require('./../utils/jwt');
 const User = require('./../models/index').User;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const router = require('express').Router();
 
 /**
