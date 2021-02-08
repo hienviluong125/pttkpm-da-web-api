@@ -13,6 +13,7 @@ const corsOptions = {
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
+app.get('/', (_, res) => res.status(200).json({title: 'Welcome to PTTKPM-DA-WEB-API'}))
 // Auth controller
 app.use("/auth", require("./controllers/auth.controller.js"));
 
