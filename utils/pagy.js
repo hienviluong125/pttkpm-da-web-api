@@ -5,6 +5,7 @@ module.exports = async function ({
   limit,
   page,
   include = [],
+  attributes = {},
   order = [['id', 'DESC']]
 }) {
   const offset = limit * (page - 1);
@@ -14,6 +15,7 @@ module.exports = async function ({
     offset: offset,
     include: include,
     order: order,
+    attributes: attributes,
     distinct: true
   });
 

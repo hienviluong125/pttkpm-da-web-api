@@ -21,6 +21,7 @@ app.use("/auth", require("./controllers/auth.controller.js"));
 app.use('/api/dashboard/blog', require('./controllers/dashboard/blog.controller.js'));
 app.use('/api/dashboard/workspace', require('./controllers/dashboard/workspace.controller.js'));
 app.use('/api/dashboard/workspace_type', require('./controllers/dashboard/workspaceType.controller.js'));
+app.use('/api/dashboard/user', require('./controllers/dashboard/user.controller.js'));
 
 // Client controller
 app.use("/api/user", require("./controllers/user.controller.js"));
