@@ -25,6 +25,7 @@ app.use('/api/dashboard/workspace_type', require('./controllers/dashboard/worksp
 // Client controller
 app.use("/api/user", require("./controllers/user.controller.js"));
 app.use("/api/workspace", require("./controllers/workspace.controller.js"));
+app.use('/api/blog', require('./controllers/blog.controller.js'));
 
 app.listen(port, function () {
   console.log(`Listen to port ${port}`);
