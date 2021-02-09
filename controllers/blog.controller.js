@@ -1,5 +1,5 @@
 const { authenticateToken, authorization } = require('./../middlewares/auth.middleware');
-const { Blog } = require('./../models/index');
+const { Blog, User } = require('./../models/index');
 const pagy = require('./../utils/pagy');
 const router = require('express').Router();
 
@@ -12,6 +12,17 @@ router.get('/', authenticateToken, authorization(['admin', 'partner', 'member'])
 
   res.json({ success: true, blogPagy });
 });
+
+router.get('/hot_blogs', async function (req, res) {
+  const page = typeof (req.query.page) !== 'undefined' ? parseInt(req.query.page) : 1;
+  const includeOption = [
+    { model: User, attributes: { exclude: ['password', 'createdAt', 'updatedAt'] } }
+  ]
+
+  const blogPagy = await pagy({ model: Blog, include: includeOption, limit: 10, page: page });
+
+  res.json({ success: true, blogPagy });
+})
 
 // {
 //   "title": "aaa",
@@ -30,8 +41,8 @@ router.post('/create', authenticateToken, authorization(['admin', 'partner', 'me
   }
 });
 
-router.get('/:id/show', authenticateToken, authorization(['admin', 'partner', 'member']), async function (req, res) {
-  const blog = await Blog.findOne({ where: { id: req.params.id, user_id: req.user.id } });
+router.get('/:id/show', async function (req, res) {
+  const blog = await Blog.findOne({ where: { id: req.params.id } });
 
   res.json({ success: true, blog });
 });
