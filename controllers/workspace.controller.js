@@ -21,7 +21,21 @@ router.get('/', authenticateToken, authorization(['admin', 'partner']), async fu
   res.json({ success: true, workspacePagy });
 });
 
-router.get('/:id/show', authenticateToken, authorization(['admin', 'partner']), async function (req, res) {
+router.get('/hot_workspaces', async function (req, res) {
+  const page = typeof (req.query.page) !== 'undefined' ? parseInt(req.query.page) : 1;
+  const includeOption = [
+    { model: User, attributes: { exclude: ['password', 'createdAt', 'updatedAt'] } },
+    { model: Attachment },
+    { model: WorkspaceService },
+    { model: WorkspaceType }
+  ]
+
+  const workspacePagy = await pagy({ model: Workspace, include: includeOption, limit: 10, page: page });
+
+  res.json({ success: true, workspacePagy });
+})
+
+router.get('/:id/show', async function (req, res) {
   const workspace = await Workspace.findOne({
     where: { id: req.params.id },
     include: [
