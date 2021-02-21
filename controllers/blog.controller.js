@@ -15,11 +15,12 @@ router.get('/', authenticateToken, authorization(['admin', 'partner', 'member'])
 
 router.get('/hot_blogs', async function (req, res) {
   const page = typeof (req.query.page) !== 'undefined' ? parseInt(req.query.page) : 1;
+  const limit = typeof(req.query.limit) !== 'undefined' ? parseInt(req.query.limit) : 10;
   const includeOption = [
     { model: User, attributes: { exclude: ['password', 'createdAt', 'updatedAt'] } }
   ]
 
-  const blogPagy = await pagy({ model: Blog, include: includeOption, limit: 10, page: page });
+  const blogPagy = await pagy({ model: Blog, include: includeOption, limit: limit, page: page });
 
   res.json({ success: true, blogPagy });
 })
