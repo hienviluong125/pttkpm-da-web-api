@@ -75,7 +75,7 @@ const seedWorkspaceWithService = async () => {
         name: faker.name.findName(),
         workspace_type_id: randomWorkspaceTypeId,
         address: faker.address.streetAddress(),
-        country: faker.address.country(),
+        country: 'Vietnam',
         lat: faker.address.latitude(),
         lng: faker.address.longitude(),
         price: faker.commerce.price(),
@@ -95,7 +95,7 @@ const seedWorkspaceWithService = async () => {
 
       for (let z = 0; z < 5; z++) {
         let workspaceAttachment = await Attachment.create({
-          url: faker.image.imageUrl(),
+          url: `${faker.image.city()}?random=${Date.now()}`.replace("640", "1024"),
           type: 'Workspace',
           type_id: workspace.id
         })
@@ -180,6 +180,7 @@ const seedOrder = async () => {
   await seedWorkspaceWithService();
   await seedOrder();
   await seedBlog();
+  // console.log(`${faker.image.city()}?random=${Date.now()}`.replace("640", "1024"));
 
   process.exit()
 })();

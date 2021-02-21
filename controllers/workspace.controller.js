@@ -2,6 +2,7 @@ const { authenticateToken, authorization } = require('./../middlewares/auth.midd
 const { Order, Workspace, Attachment, WorkspaceService, User, WorkspaceType } = require('./../models/index');
 const pagy = require('./../utils/pagy');
 const router = require('express').Router();
+const { Sequelize, Op } = require('sequelize');
 
 router.get('/', authenticateToken, authorization(['admin', 'partner']), async function (req, res) {
   const page = typeof (req.query.page) !== 'undefined' ? parseInt(req.query.page) : 1;
@@ -46,7 +47,19 @@ router.get('/:id/show', async function (req, res) {
     ]
   })
 
-  res.json({ success: true, workspace });
+  const nearbyWorkspaces = await Workspace.findAll({
+    where: { id: { [Op.not]: parseInt(req.params.id) } },
+    order: Sequelize.literal('RANDOM()'),
+    limit: 5,
+    include: [
+      { model: User, attributes: { exclude: ['password', 'createdAt', 'updatedAt'] } },
+      { model: Attachment },
+      { model: WorkspaceService },
+      { model: WorkspaceType }
+    ]
+  });
+
+  res.json({ success: true, workspace, nearbyWorkspaces });
 });
 
 // {
