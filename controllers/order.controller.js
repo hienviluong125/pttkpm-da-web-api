@@ -94,4 +94,12 @@ router.post('/:id/update', authenticateToken, authorization(['partner', 'member'
   return res.json({ success: false, message: 'Something went wrong!' });
 });
 
+router.post('/:id/delete', authenticateToken, authorization(['member']), async (req, res) => {
+  if (await Order.destroy({ where: { id: req.params.id, user_id: req.user.id } })) {
+    return res.json({ success: true });
+  } else {
+    return res.status(500).json({ success: false });
+  }
+})
+
 module.exports = router;
