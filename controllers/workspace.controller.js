@@ -22,6 +22,13 @@ router.get('/', authenticateToken, authorization(['admin', 'partner']), async fu
   res.json({ success: true, workspacePagy });
 });
 
+router.get('/type', async function (req, res) {
+  const types = await WorkspaceType.findAll();
+
+  return res.status(200).json({success: true, workspaceType: types })
+});
+
+
 router.get('/hot_workspaces', async function (req, res) {
   const page = typeof (req.query.page) !== 'undefined' ? parseInt(req.query.page) : 1;
   const includeOption = [

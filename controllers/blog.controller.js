@@ -31,12 +31,12 @@ router.get('/hot_blogs', async function (req, res) {
 //   "content": "hello world !!!!!!"
 // }
 router.post('/create', authenticateToken, authorization(['admin', 'partner', 'member']), async function (req, res) {
-  const { title, content, short_description } = req.body;
+  const { title, content, short_description, image } = req.body;
 
-  const blog = await Blog.build({ title, content, short_description, user_id: req.user.id });
+  const blog = await Blog.build({ title, content, short_description, user_id: req.user.id, image });
 
   if (await blog.save()) {
-    return res.json({ success: true, blog: { title, content, short_description } });
+    return res.json({ success: true, blog: { title, content, short_description, image } });
   } else {
     return res.status(500).json({ success: false });
   }
@@ -54,13 +54,14 @@ router.get('/:id/show', async function (req, res) {
 //   "content": "hello world !!!!!! updated"
 // }
 router.post('/:id/update', authenticateToken, authorization(['admin', 'partner', 'member']), async function (req, res) {
-  const { title, content, short_description } = req.body;
+  const { title, content, short_description, image } = req.body;
 
   let blog = await Blog.findOne({ where: { id: req.params.id, user_id: req.user.id } });
 
   blog.title = title;
   blog.content = content;
   blog.short_description = short_description;
+  blog.image = image;
 
   if (await blog.save()) {
     return res.json({ success: true, blog });
